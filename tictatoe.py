@@ -12,14 +12,18 @@ class Game:
 
     
     def __init__(self):
-        self.board
+        self.board = Board()
+        # self.ai
+        self.player = 1 //1-cross
 
 
     def show_lines(self):
 
         # vertical
         pygame.draw.line(screen, LINE)
+    
 
+    def draw_fig():
 
 
     def draw_fig(self, row,cols):
@@ -63,4 +67,13 @@ class Board:
             print(self.squares)
 
 
-     def empty_sqr():       
+     def empty_sqr(): 
+
+
+    def state_self(): 
+
+
+    def state_self():  
+
+
+    def state_self():  

@@ -1,0 +1,8 @@
+console.log(WebAssembly);
+/*
+Object [WebAssembly]{
+compile: [Function: complile],
+validate: [Function: validate],
+instantiate: [Function: instantiate]
+}
+*/https://nodejs.org/en/learn/getting-started/introduction-to-nodejs
