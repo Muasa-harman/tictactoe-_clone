@@ -37,9 +37,15 @@ class Game:
             # draw crosss
             # desc line
 
+    def minimal():
 
+    def rnd():
+    def eval():    
 
     def net_buuton():
+
+
+    def eval():    
             
 
             
