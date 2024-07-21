@@ -24,6 +24,19 @@ class Game:
 
     def draw_fig(self, row,cols):
         # if self.player = self.player % 2 + 1
+        if self.player == 1:
+            pygame.draw.line(screen,)
+            # 
+        elif self.player == 2:
+            pygame.draw.circle(screen,)
+           
+            # draw crosss
+            # desc line
+
+
+
+    def net_buuton():
+            
 
             
 
