@@ -74,29 +74,93 @@ class Board:
     def isEmpty(self):
         return self.marked_sqr == 0  
 
+class AI:
+    def __init__(self,level=0,player=2):
+        self.level = level
+        self.player = player
 
+    def rnd_choice(self, board):
+        empty__sqrs = board.get_empty_sqrs()
+        idy = random.randrange(0,len(empty__sqrs))
 
-    # def empty_sqr(): 
+        return empty__sqrs(idy)  #(row, col)
+    
+    def minimal(self,board,making):
+        # terminal case
+        case = board.final_state()
 
+        # player 1 wins
+        if case == 1:
+            return 1, None #eval , move
+        
+        # player 2 wins
+        if case == 2:
+            return -1, None
+        
+        # draw
+        elif board.is_full():
+            return 0 , None
+        
+        if making:
+            may_eval = -100
+            best_move = None
+            empty__sqr = board.get_empty_sqrs()
 
-    # def state_self(): 
+            for (row,col) in empty__sqr:
+                temp_board = copy.deepcopy(board)
+                temp_board.mark_sqr(row,col,1)
+                eval = self.minimal(temp_board,False)[0]
+                if eval < may_eval:
+                    may_eval = eval
+                    best_move = (row,col)
 
+            return may_eval, best_move  
+            
 
-    # def state_self():  
+        elif not making:
+            min_eval = 100
+            best_move = None
+            empty__sqr = board.get_empty_sqrs()
 
+            for (row,col) in empty__sqr:
+                temp_board = copy.deepcopy(board)
+                temp_board.mark_sqr(row,col,self.player)
+                eval = self.minimal(temp_board,True)[0]
+                if eval < min_eval:
+                    min_eval = eval
+                    best_move = (row,col)
 
-    # def state_self():  
+            return min_eval, best_move        
+
+    def eval(self,main_board):
+        if self.level == 0:
+            # random choice  
+            eval = 'random'
+            move = self.rnd_choice(main_board)
+        else:
+            # minimum algorithm choice
+            eval, move = self.minimal(main_board,False)
+
+        print(f'AI has chosen to mark the square in pass{move} with an eval of {eval}')    
+
+        return move #(row,col)
+ 
 class Game:
 
     def __init__(self):
         self.board = Board()
-        # self.ai = AI()
+        self.ai = AI()
         self.player = 1  #1-cross 2-circles
-        self.gamemode = 'pvp' #pvp or ai
+        self.gamemode = 'ai' #pvp or ai
         self.running = True
         self.show_lines()
 
+    def make_move(self, row, col): 
+        self.board.mark_sqr(row,col,self.player)
+        self.draw_fig(row,col)
+        self.change_player()
     def show_lines(self):
+        screen.fill(BG_COLOR)
         # vertical
         pygame.draw.line(screen,LINE_COLOR, (SIQSIC,0),(SIQSIC,HEIGHT), LINE_WIDTH)
         pygame.draw.line(screen,LINE_COLOR, (WIDTH - SIQSIC,0),(WIDTH - SIQSIC, HEIGHT), LINE_WIDTH)
@@ -126,77 +190,24 @@ class Game:
     def change_player(self):
         self.player = self.player % 2 + 1
 
+    def reset(self):
+        self.__init__()
 
 
-# class AI:
-    # def __init__(self) -> None:
-    #     pass
 
 
-# class Game:
-
-    
-    # def __init__(self):
-    #     self.board = Board()
-    #     # self.ai
-    #     self.player = 1 //1-cross
-
-
-    # def show_lines(self):
-
-    #     # vertical
-    #     pygame.draw.line(screen, LINE)
-    
-
-    # def draw_fig():
-
-
-    # def draw_fig(self, row,cols):
-    #     # if self.player = self.player % 2 + 1
-    #     if self.player == 1:
-    #         pygame.draw.line(screen,)
-    #         # 
-    #     elif self.player == 2:
-    #         pygame.draw.circle(screen,)
-           
-    #         # draw crosss
-    #         # desc line
-
-    # def minimal():
-
-    # def rnd():
-    # def eval():    
-
-    # def net_buuton():
-
-
-    # def eval():    
-            
-
-            
-
-    # def main():
-
-    #     board = game.board
-    #     game = Game()
-    #     while True:
-    #      for event in pygame.event.get():
-
-    #         if event.type == pygame.QUITE:
-    #             pygame.quit()
-    #             sys.exit()
-
-    #         if event.type == pygame.
-    #             pos = event.pos   
-    #             row = pos[1] //SIQSIC
-    #             col = pos[0] //SIQSIC 
-
-# MAIN
+def change_gamemode(self):
+    self.gamemode = 'ai' if self.gamemode == 'pvp' else 'pvp' #or
+    # if self.gamemode == 'pvp': 
+    #     self.gamemode = 'ai'
+    # else: 
+    #     self.gamemode = 'pvp'
 
 def main():
     # object
     game = Game()
     board= game.board
+    ai = game.ai
     # main loop
     while True:
 
@@ -214,13 +225,41 @@ def main():
                 # print(row,col)
 
                 if board.empty_sqr(row,col):
-                    board.mark_sqr(row,col, game.player)
-                    game.draw_fig(row,col)
-                    game.change_player()
+                    game.make_move(row,col)
+                #    board.mark_sqr(row,col, game.player)
+                #    game.draw_fig(row,col)
+                #    game.change_player()
                     # print(board.squares)
 
                 # game.board.mark_sqr(row,col,1)
                 # print(game.board.squares)
+                if event.type == pygame.KEYDOWN:
+                    # g-gamemode
+                    if event.key == pygame.K_g:
+                        game.change_gamemode()
+
+                    # r-restart
+                    if event.key == pygame.K_r:
+                        game.reset()
+                        board = game.board
+                        ai = game.ai
+                    # 0 - random ai
+                    if event.key == pygame.K_0:
+                        ai.level = 0
+
+                        # 1- random ai
+                    if event.key == pygame.K_1:
+                        ai.level = 1  
+        if game.gamemode == 'ai' and game.player == ai.player and game.running:
+                # update the screen 
+            pygame.display.update()  
+            # ai method
+            row,col = ai.eval(board)
+            board.mark_sqr(row,col, ai.player)
+            game.draw_fig(row,col)
+            game.change_player()
+
+
         pygame.display.update()        
 
 main()    
