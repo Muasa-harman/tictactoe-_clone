@@ -1,11 +1,39 @@
 import sys
+import copy
+import random
+# import numpy as np
 import pygame
 
 from const import *
 
-# PYGAME
+# PYGAME SET UP
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('TIC TAC TOE')
+screen.fill(BG_COLOR)
+
+# -- CLASSES --
+class Board:
+    def __init__(self) -> None:
+            
+            print(self.squares)
+
+
+    def empty_sqr(): 
+
+
+    def state_self(): 
+
+
+    def state_self():  
+
+
+    def state_self():  
+
+
+class AI:
+    def __init__(self) -> None:
+        pass
 
 
 class Game:
@@ -66,20 +94,8 @@ class Game:
                 row = pos[1] //SIQSIC
                 col = pos[0] //SIQSIC 
 
+# MAIN
 
-class Board:
-      def __init__(self) -> None:
-            
-            print(self.squares)
+def main():
 
-
-     def empty_sqr(): 
-
-
-    def state_self(): 
-
-
-    def state_self():  
-
-
-    def state_self():  
+main()    
